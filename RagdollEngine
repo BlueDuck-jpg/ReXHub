@@ -1,0 +1,388 @@
+if game.CoreGui:FindFirstChild("ReX Ui Library") then
+    game.CoreGui["ReX Ui Library"]:Destroy() 
+end
+
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/ZvU19kR3"))()
+local window = library:Window("ReX Ui Library", Enum.KeyCode.Equals)
+local main = window:Tab("Main")
+local teleports = window:Tab("Teleports")
+local setting = window:Tab("Settings")
+
+library:createNotification("Notification!", "Thanks for using our script!", 5)
+
+getgenv().ragdoll = false
+getgenv().pushaura = false
+getgenv().loopbomb = false
+
+PlayerName = ""
+
+main:Button("Made By Blue Duck#8902", function()
+    if setclipboard ~= nil then
+        setclipboard("Blue Duck#8902")
+    elseif Synapse ~= nil then
+        Synapse:copy("Blue Duck#8902")
+    elseif Clipboard ~= nil then
+        Clipboard.set("Blue Duck#8902")
+    else
+        library:createNotification("Your exploit isn't compatible to copy strings. Consider using KRNL or Fluxus if you want to use a free exploit.")
+    end
+end)
+
+main:Toggle("Anti Ragdoll", function(t)
+    getgenv().ragdoll = t 
+
+    spawn(function()
+        while wait() Destroy
+            if getgenv().ragdoll then
+                game.Players.LocalPlayer.Character["Local Ragdoll"].Disabled = true
+            elseif not getgenv().ragdoll then
+                game.Players.LocalPlayer.Character["Local Ragdoll"].Disabled = false
+            end
+        end
+    end)
+end) 
+
+main:Button("Trigger Mines", function()
+    for i,v in pairs(game:GetService("Workspace").NewerMap.Obstacles.Minefield.Mines:GetChildren()) do 
+        if v:IsA("Model") then
+            for i, h in pairs(v:GetDescendants()) do
+                if h:IsA("BasePart") and h.Name == "Hitbox" then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, h, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, h, 1)
+                end
+            end
+        end
+    end
+end)
+
+main:Button("Free Push | Low Push", function()
+    local Debounce = false
+    local Held = false
+    tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+    tool.RequiresHandle = false
+    tool.Name = "Free Push"
+    local anim = Instance.new("Animation", tool)
+    anim.AnimationId = "rbxassetid://1984283994"
+    anim.Name = "PushAnim"
+    tool.Activated:Connect(function()
+        Held = true
+        while Held do
+            wait()
+            game.Players:FindFirstChild("Push",true).Parent.Push.PushEvent:FireServer()
+            s = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(anim)
+            if not debounce then
+                debounce = true
+                s:Play()
+                wait(1)
+                debounce = false
+            end
+        end
+    end)
+    tool.Deactivated:Connect(function()
+        Held = false
+    end)
+end)
+
+main:Button("Bomb All", function()
+    for i,v in pairs(game.Players:GetPlayers()) do
+        if v.Name ~= game.Players.LocalPlayer.Name then
+            local args = {
+                [1] = Vector3.new(0, 0, 0),
+                [2] = v.Character.HumanoidRootPart.CFrame
+            }
+            
+            game:GetService("Players"):FindFirstChild("ImpulseGrenade", true).Parent:WaitForChild('ImpulseGrenade'):WaitForChild('CreateGrenade'):FireServer(unpack(args))
+        end
+    end
+end)
+
+main:Button("R15 Potion", function()
+    game:GetService("Players"):FindFirstChild("OddPotion", true).Parent:WaitForChild("OddPotion"):WaitForChild("PotionEvent"):FireServer()
+end)
+
+main:Toggle("Push Aura | Hight Push", function(t)
+    getgenv().pushaura = t 
+
+    spawn(function()
+        while wait() do
+            if getgenv().pushaura then
+                game.Players:FindFirstChild("Push", true).Parent.Push.PushEvent:FireServer()
+            end
+        end
+    end)
+end)
+
+main:Button("Become Invisible", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].Character:GetChildren()) do
+        if v.Name ~= "HumanoidRootPart" then
+            local args = {
+                [1] = v,
+                [2] = 1
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.ClassName == "Accessory" then
+            local args = {
+                [1] = v.Handle,
+                [2] = 1
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.Name == "Head" then
+            for i,h in pairs(v:GetChildren()) do
+                if h.ClassName == "Decal" then
+                    local args = {
+                        [1] = h,
+                        [2] = 1
+                    }
+                    
+                    game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+                end
+            end
+        end
+	end
+end)
+
+main:Button("Become Visible", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].Character:GetChildren()) do
+        if v.Name ~= "HumanoidRootPart" then
+            local args = {
+                [1] = v,
+                [2] = 0
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.ClassName == "Accessory" then
+            local args = {
+                [1] = v.Handle,
+                [2] = 0
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.Name == "Head" then
+            for i,h in pairs(v:GetChildren()) do
+                if h.ClassName == "Decal" then
+                    local args = {
+                        [1] = h,
+                        [2] = 0
+                    }
+                    
+                    game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+                end
+            end
+        end
+	end
+end)
+
+main:Label("Target Chapter")
+
+main:Textbox("Pick Target", "Target's Username", false, function(t)
+    PlayerName = tostring(t)
+end)
+
+main:Button("Bomb Target", function()
+    local args = {
+		[1] = Vector3.new(0, 0, 0),
+		[2] = game.Players:FindFirstChild(tostring(PlayerName)).Character.HumanoidRootPart.CFrame
+	}
+	
+	game:GetService("Players"):FindFirstChild("ImpulseGrenade", true).Parent:WaitForChild('ImpulseGrenade'):WaitForChild('CreateGrenade'):FireServer(unpack(args))
+end)
+
+main:Toggle("Loop Bomb Target", function(t)
+    if t and not getgenv().loopbomb then
+        getgenv().loopbomb = true
+        while wait() do
+            if getgenv().loopbomb then
+                local args = {
+                    [1] = Vector3.new(0, 0, 0),
+                    [2] = game.Players:FindFirstChild(tostring(PlayerName)).Character.HumanoidRootPart.CFrame
+                }
+                
+                game:GetService("Players"):FindFirstChild("ImpulseGrenade", true).Parent:WaitForChild('ImpulseGrenade'):WaitForChild('CreateGrenade'):FireServer(unpack(args))
+            end
+        end
+    elseif not t and getgenv().loopbomb then
+        getgenv().loopbomb = false
+    end
+end)
+
+main:Button("Invisible Target", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].Character:GetChildren()) do
+        if v.Name ~= "HumanoidRootPart" then
+            local args = {
+                [1] = v,
+                [2] = 1
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.ClassName == "Accessory" then
+            local args = {
+                [1] = v.Handle,
+                [2] = 1
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.Name == "Head" then
+            for i,h in pairs(v:GetChildren()) do
+                if h.ClassName == "Decal" then
+                    local args = {
+                        [1] = h,
+                        [2] = 1
+                    }
+                    
+                    game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+                end
+            end
+        end
+	end
+end)
+
+main:Button("Visible Target", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].Character:GetChildren()) do
+        if v.Name ~= "HumanoidRootPart" then
+            local args = {
+                [1] = v,
+                [2] = 0
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.ClassName == "Accessory" then
+            local args = {
+                [1] = v.Handle,
+                [2] = 0
+            }
+            
+            game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        elseif v.Name == "Head" then
+            for i,h in pairs(v:GetChildren()) do
+                if h.ClassName == "Decal" then
+                    local args = {
+                        [1] = h,
+                        [2] = 0
+                    }
+                    
+                    game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+                end
+            end
+        end
+	end
+end)
+
+main:Button("Headless Head Target", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].character:GetChildren()) do
+		if v.Name == "Head" then
+			local args = {
+				[1] = v,
+				[2] = 1
+			}
+			
+			game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+		end
+		for i,c in pairs(v:GetChildren()) do
+			if c:IsA("Decal") then
+				local args = {
+					[1] = c,
+					[2] = 1
+				}
+				
+				game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+			end
+		end
+	end
+end)
+
+main:Button("Turn Target To Block", function()
+    for i,v in pairs(game.Players[tostring(PlayerName)].Character:GetChildren()) do
+        if v.Name == "HumanoidRootPart" then
+            local args = {
+				[1] = v,
+				[2] = 0
+			}
+			
+			game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        else 
+            local args = {
+				[1] = v,
+				[2] = 1
+			}
+			
+			game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+        end
+		for i,c in pairs(v:GetChildren()) do
+			if c:IsA("Part") and c.Name == "Handle" then
+				-- Script generated by SimpleSpy - credits to exx#9394
+            	
+            	local args = {
+            		[1] = c,
+            		[2] = 1
+            	}
+            	
+            	game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+            	
+            elseif c:IsA("Decal") then
+            				-- Script generated by SimpleSpy - credits to exx#9394
+            	
+            	local args = {
+            		[1] = c,
+            		[2] = 1
+            	}
+            	
+            	game:GetService("Players"):FindFirstChild("OddPotion", true).Parent.OddPotion.TransEvent:FireServer(unpack(args))
+            	
+            end
+        end
+    end
+end)
+
+main:Button("Respawn Fix", function()
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+end)
+
+teleports:Button("Tower Top", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(113.489975, 1015.17401, -20.2773857, 0.0318370685, 3.85595378e-08, 0.999493539, -6.89101185e-08, 1, -3.63840655e-08, -0.999493539, -6.77168757e-08, 0.0318370685) 
+end)
+
+teleports:Button("Tower Bottom", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123.840302, 3.17397165, -20.8029842, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+teleports:Button("Dumpster", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(151.354233, 2.97397137, -54.0487289, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+teleports:Button("Spiral Stairs", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120.552338, 808.973999, -151.862534, 1, 0, 0, 0, 1, 0, 0, 0, 1) 
+end)
+
+teleports:Button("Escalator Top", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-208.254196, 66.9739685, -50.0951996, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+teleports:Button("Escalator Bottom", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-126.141983, 3.17397165, -53.5771828, 1, 0, 0, 0, 1, 0, 0, 0, 1) 
+end)
+
+teleports:Button("Pool", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-128.89061, 12.9739714, -138.511719, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+teleports:Button("Air Balloon", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-111.657204, 3.17397165, 43.1146393, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+teleports:Button("Double Stairs", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2.38358068, 182.973969, -328.117523, 1, 0, 0, 0, 1, 0, 0, 0, 1) 
+end)
+
+setting:Button("Rejoin", function()
+	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+end)
+
+setting:Button("Switch Server", function()
+	game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+end)
+
+setting:Label("Hide/Show Gui: =")
+
+setting:DestroyGui()
