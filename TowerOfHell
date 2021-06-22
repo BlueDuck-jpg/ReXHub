@@ -1,0 +1,85 @@
+if game.CoreGui:FindFirstChild("ReX Ui Library") then
+    game.CoreGui["ReX Ui Library"]:Destroy() 
+end
+
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/GayfVWxf"))()
+local window = library:Window("ReX Ui Library", Enum.KeyCode.Equals)
+local Cheats = window:Tab("Cheats")
+local infjump = false
+local godmode = false
+local endtimer = false
+local timer = 0.00
+
+library:createNotification("WARNING!!!", "DO NOT USE THE SCRIPT YET! BYPASSING ANTI CHEAT!", 5)
+
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if infjump then
+        game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState("Jumping")
+    end
+end)
+
+spawn(function()
+    while not endtimer do 
+        wait(0.01)
+        timer = timer + 0.01
+    end
+end)
+
+wait(0.09)
+local gm = getrawmetatable(game)
+setreadonly(gm, false)
+
+local OldNameCall = gm.__namecall
+local OldIndex = gm.__index
+local oldspeed, oldjump = game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed, game:GetService("Players").LocalPlayer.Character.Humanoid.JumpPower
+
+gm.__namecall = newcclosure(function(self, ...)
+    local args = {...}
+    if getnamecallmethod() == "Kick" and self == game.Players.LocalPlayer then print("Fuck no nigga")
+    elseif args[1] == "kills" and getnamecallmethod() == "FindFirstChild" and godmodeenabled then return false
+    else return OldNameCall(self, ...) end
+end)
+
+gm.__index = newcclosure(function(self, key)
+    if key == "WalkSpeed" and self == game.Players.LocalPlayer.Character.Humanoid then
+        return oldspeed;
+    elseif key == "JumpPower" and self == game.Players.LocalPlayer.Character.Humanoid then
+        return oldjump;
+    else
+        return OldIndex(self, key)
+    end
+end)
+
+setreadonly(gm, true)
+game.Players.LocalPlayer.PlayerScripts.LocalScript:Destroy()
+game.Players.LocalPlayer.PlayerScripts.LocalScript2:Destroy()
+endtimer = true
+
+library:createNotification("SUCCESS!!", "SUCCESSFULLY BYPASSED ANTI CHEAT AT " .. tostring(timer) .. " SECONDS", 5)
+
+Cheats:Button("Get All Items", function()
+    for i,v in pairs(game:GetService("ReplicatedStorage").Gear:GetChildren()) do
+        local tool = v:Clone()
+        tool.Parent = game.Players.LocalPlayer.Backpack
+    end	
+end)
+
+Cheats:Toggle("Infinite Jump", function(t)
+    infjumpenabled = t
+end)
+
+Cheats:Toggle("God Mode", function(t)
+    godmodeenabled = t
+end)
+
+Cheats:Button("Teleport To End", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.finishes:FindFirstChild("Finish").CFrame
+end)
+
+Cheats:Slider("Walk Speed", 0, 100, tonumber(game.Players.LocalPlayer.Character.Humanoid.WalkSpeed), function(t)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+Cheats:Slider("Jump Power", 0, 100, tonumber(game.Players.LocalPlayer.Character.Humanoid.JumpPower), function(t)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
