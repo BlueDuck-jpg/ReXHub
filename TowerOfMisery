@@ -7,8 +7,18 @@ local window = library:Window("ReX Ui Library", Enum.KeyCode.Equals)
 local Farm = window:Tab("Farm")
 local Shop = window:Tab("Shop")
 getgenv().KillAfter = false
+timer = 0.00
+counter = false
 
-Farm:Button("IMPORTANT | Anti Cheat Bypass", function()
+library:createNotification("NOTIFICATION!", "Thanks for using ReX Hub!!", 5")
+
+spawn(function()
+	while not counter do
+		wait(0.01)
+		timer = timer + 0.01
+	end
+end)
+
     if _G.AcBypassed == nil then
         local plr = game:GetService("Players").LocalPlayer
         local GameMt = getrawmetatable(game)
@@ -43,7 +53,9 @@ Farm:Button("IMPORTANT | Anti Cheat Bypass", function()
         end)
      end
      _G.AcBypassed = true
-end)
+     wait(0.12)
+     counter = true
+     library:createNotification("SUCCESS!", "Successfully bypassed anti cheat at " .. tostring(timer) .. " second!", 5)
 
 Farm:Button("Remove Kill Part", function()
     for i,v in pairs(workspace:GetDescendants()) do 
