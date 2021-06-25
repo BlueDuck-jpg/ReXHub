@@ -35,7 +35,7 @@ local oldspeed, oldjump = game:GetService("Players").LocalPlayer.Character.Human
 
 gm.__namecall = newcclosure(function(self, ...)
     local args = {...}
-    if getnamecallmethod() == "Kick" and self == game.Players.LocalPlayer then print("Fuck no nigga")
+    if getnamecallmethod() == "Kick" and self == game.Players.LocalPlayer then print("Bypassed anticheat!")
     elseif args[1] == "kills" and getnamecallmethod() == "FindFirstChild" and godmodeenabled then return false
     else return OldNameCall(self, ...) end
 end)
